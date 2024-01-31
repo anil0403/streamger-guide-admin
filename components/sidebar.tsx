@@ -49,12 +49,12 @@ const Sidebar = () => {
       list: [
         {
           title: "Movies",
-          path: "/archive/movies",
+          path: "/archived/movies",
           icon: <MdOutlineLocalMovies />,
         },
         {
           title: "Tv Shows",
-          path: "/archive/tvShows",
+          path: "/archived/tv-shows",
           icon: <IoTvSharp />,
         },
       ],
@@ -101,8 +101,9 @@ const Sidebar = () => {
               {item.title}
             </h2>
             <div className="space-y-1">
-              {item.list.map((element: any) => (
+              {item.list.map((element: any, index: number) => (
                 <Button
+                  key={index}
                   asChild
                   variant={pathname === element.path ? "secondary" : "ghost"}
                   size="default"

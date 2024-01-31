@@ -19,6 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { IP } from "@/lib/interceptor/admin_content/axios";
 import Image from "next/image";
+import { getArchivedMovies } from "@/lib/action/archived/movies/action";
 
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
@@ -27,12 +28,13 @@ interface ServicePageProps {
 const ServicesPage = async ({ searchParams }: ServicePageProps) => {
   const searchQuery = searchParams?.searchQuery?.toString() || "";
   const page = searchParams?.page?.toString() || "1";
-  const services = await getServices(searchQuery, page);
-  // console.log("services = ", services);
+  // const services = await getServices(searchQuery, page);
+  const archivedMovies = await getArchivedMovies(searchQuery, page)
+  console.log("archived movies  = ", archivedMovies);
   return (
     <div className="hidden h-full flex-1 flex-col space-y- px-4 py-2 md:flex border-2 rounded-lg">
       <h2 className="text-lg font-semibold py-2 border-b-2">
-        Current Services
+        Archived Movies
       </h2>
 
       <div className="space-y-4 py-4">
@@ -55,17 +57,17 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {services?.map((service: any, index: any) => (
+              {archivedMovies?.map((movie: any, index: any) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{service?.name}</TableCell>
+                  <TableCell>{movie?.name}</TableCell>
                   <TableCell>
                     <Avatar>
                     <Image
-                  src={`${IP}/${service?.picture}`}
+                  src={`${IP}/${movie?.picture}`}
                   width={40}
                   height={40}
-                  alt={service?.name}
+                  alt={movie?.name}
                 />
                       {/* <AvatarImage
                         src={`${IP}/${service?.picture}`}

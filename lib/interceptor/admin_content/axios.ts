@@ -34,7 +34,7 @@ serviceAuthInstance.interceptors.request.use(
     if (!config.headers["Authorization"]) {
       config.headers[
         "Authorization"
-      ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NzMzNTQxLCJpYXQiOjE3MDY2OTAzNDEsImp0aSI6IjZiODVkZTBmNmY0ODQyY2RhYzhjMjljY2Y5ODFkMjU2IiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.i2xPKuS1aN71BAdKscOQ1a9mkWjGpBE6f24H8XwaeVY`;
+      ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NzY3NzgzLCJpYXQiOjE3MDY3MjQ1ODMsImp0aSI6ImI5ZmE5MWFjNDJhNTRlMjg4NzlhOWU1NGI2MzFjMGQ1IiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.rPdB96O7rMdo4JuMhPnsCVvS38ydIa2OHbRmtng2Qyo`;
     }
     return config;
   },
