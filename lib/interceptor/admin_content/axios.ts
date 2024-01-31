@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // content microservice
-export const IP = "http://192.168.1.73:8000"; // local
-// export const IP = "http://13.201.166.58:8001"; // cloud
+// export const IP = "http://192.168.1.73:8000"; // local
+export const IP = "http://13.201.19.240:8001"; // cloud
 
 export const ADMIN_LOGIN_URL = `${IP}/api/v1`;
 
