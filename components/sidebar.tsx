@@ -63,8 +63,8 @@ const Sidebar = () => {
       title: "Resources",
       list: [
         {
-          title: "Language",
-          path: "/language",
+          title: "Languages",
+          path: "/languages",
           icon: <FaLanguage />,
         },
         {
@@ -73,8 +73,8 @@ const Sidebar = () => {
           icon: <FaPlay />,
         },
         {
-          title: "Location",
-          path: "/location",
+          title: "Locations",
+          path: "/locations",
           icon: <FaLocationDot />,
         },
         {

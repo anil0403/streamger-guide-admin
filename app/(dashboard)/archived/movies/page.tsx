@@ -32,7 +32,7 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
   const archivedMovies = await getArchivedMovies(searchQuery, page)
   console.log("archived movies  = ", archivedMovies);
   return (
-    <div className="hidden h-full flex-1 flex-col space-y- px-4 py-2 md:flex border-2 rounded-lg">
+    <div className="hidden h-full flex-1 flex-col  px-4  md:flex border-2 rounded-lg">
       <h2 className="text-lg font-semibold py-2 border-b-2">
         Archived Movies
       </h2>

@@ -9,7 +9,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="grid grid-cols-6">
       <Sidebar />
-      <div className="col-span-5 p-5">{children}</div>
+      <div className="col-span-5 px-5  py-2">{children}</div>
     </div>
   );
 };
