@@ -1,7 +1,7 @@
 "use client";
 import { IoTvSharp } from "react-icons/io5";
-import { Button } from "./button";
-import { ScrollArea } from "./scroll-area";
+import { Button } from "./ui/button";
+import { ScrollArea } from "./ui/scroll-area";
 import Link from "next/link";
 import {
   MdDashboard,
@@ -29,17 +29,17 @@ const Sidebar = () => {
         },
         {
           title: "Users",
-          path: "/dashboard/users",
+          path: "/users",
           icon: <MdSupervisedUserCircle />,
         },
         {
           title: "Movies",
-          path: "/dashboard/movies",
+          path: "/movies",
           icon: <MdOutlineLocalMovies />,
         },
         {
           title: "Tv Shows",
-          path: "/dashboard/tv-shows",
+          path: "/tv-shows",
           icon: <IoTvSharp />,
         },
       ],
@@ -49,12 +49,12 @@ const Sidebar = () => {
       list: [
         {
           title: "Movies",
-          path: "/dashboard/archive/movies",
+          path: "/archive/movies",
           icon: <MdOutlineLocalMovies />,
         },
         {
           title: "Tv Shows",
-          path: "/dashboard/archive/tvShows",
+          path: "/archive/tvShows",
           icon: <IoTvSharp />,
         },
       ],
@@ -64,22 +64,22 @@ const Sidebar = () => {
       list: [
         {
           title: "Language",
-          path: "/dashboard/language",
+          path: "/language",
           icon: <FaLanguage />,
         },
         {
           title: "Services",
-          path: "/dashboard/services",
+          path: "/services",
           icon: <FaPlay />,
         },
         {
           title: "Location",
-          path: "/dashboard/location",
+          path: "/location",
           icon: <FaLocationDot />,
         },
         {
           title: "Cast",
-          path: "/dashboard/cast",
+          path: "/cast",
           icon: <FaUserFriends />,
         },
       ],

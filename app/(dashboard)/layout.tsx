@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "@/components/ui/sidebar";
+import Sidebar from "@/components/sidebar";
 import { ModeToggle } from "@/components/ui/theme-toggle";
 interface LayoutProps {
   children: React.ReactNode;
