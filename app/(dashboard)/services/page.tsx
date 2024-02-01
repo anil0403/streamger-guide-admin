@@ -61,16 +61,16 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
                   <TableCell>{service?.name}</TableCell>
                   <TableCell>
                     <Avatar>
-                    <Image
+                      {/* <Image
                   src={`${IP}/${service?.picture}`}
                   width={40}
                   height={40}
                   alt={service?.name}
-                />
-                      {/* <AvatarImage
+                /> */}
+                      <AvatarImage
                         src={`${IP}/${service?.picture}`}
                         alt="@shadcn"
-                      /> */}
+                      />
                       <AvatarFallback>P</AvatarFallback>
                     </Avatar>
                   </TableCell>

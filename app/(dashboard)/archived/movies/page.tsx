@@ -29,13 +29,11 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
   const searchQuery = searchParams?.searchQuery?.toString() || "";
   const page = searchParams?.page?.toString() || "1";
   // const services = await getServices(searchQuery, page);
-  const archivedMovies = await getArchivedMovies(searchQuery, page)
+  const archivedMovies = await getArchivedMovies(searchQuery, page);
   console.log("archived movies  = ", archivedMovies);
   return (
     <div className="hidden h-full flex-1 flex-col  px-4  md:flex border-2 rounded-lg">
-      <h2 className="text-lg font-semibold py-2 border-b-2">
-        Archived Movies
-      </h2>
+      <h2 className="text-lg font-semibold py-2 border-b-2">Archived Movies</h2>
 
       <div className="space-y-4 py-4">
         <div className="flex justify-between items-center">
@@ -43,7 +41,7 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
           <TablePagination />
 
           <Button asChild size="sm">
-            <Link href="#">Add New Service</Link>
+            <Link href="/archived/movies/add-movie/">Add New Movie</Link>
           </Button>
         </div>
         <div className="rounded-md border">
@@ -52,7 +50,9 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
               <TableRow>
                 <TableHead>S.N</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead>Icon</TableHead>
+                <TableHead>Genre</TableHead>
+
+                <TableHead>Rating</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -60,23 +60,10 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
               {archivedMovies?.map((movie: any, index: any) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{movie?.name}</TableCell>
-                  <TableCell>
-                    <Avatar>
-                    <Image
-                  src={`${IP}/${movie?.picture}`}
-                  width={40}
-                  height={40}
-                  alt={movie?.name}
-                />
-                      {/* <AvatarImage
-                        src={`${IP}/${service?.picture}`}
-                        alt="@shadcn"
-                      /> */}
-                      <AvatarFallback>P</AvatarFallback>
-                    </Avatar>
-                  </TableCell>
-                  <TableCell className="space-x-4">
+                  <TableCell>{movie?.title}</TableCell>
+                  <TableCell>{(movie?.genre).join(", ")}</TableCell>
+                  <TableCell>{movie?.rating}</TableCell>
+                  <TableCell className="space-x-4 min-w-fit">
                     <Button size="sm" variant="secondary">
                       View
                     </Button>
