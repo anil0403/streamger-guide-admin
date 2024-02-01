@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Form,
   FormControl,
@@ -22,13 +22,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { toast } from "@/components/ui/use-toast";
+} from "@/components/ui/popover"
+import { toast } from "@/components/ui/use-toast"
 
 const languages = [
   { label: "English", value: "en" },
@@ -40,20 +40,18 @@ const languages = [
   { label: "Japanese", value: "ja" },
   { label: "Korean", value: "ko" },
   { label: "Chinese", value: "zh" },
-] as const;
+] as const
 
 const FormSchema = z.object({
-  languages: z.array(
-    z.string({
-      required_error: "Please select at least one language.",
-    })
-  ),
-});
+  language: z.string({
+    required_error: "Please select a language.",
+  }),
+})
 
 export function ComboboxForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  });
+  })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
@@ -63,7 +61,7 @@ export function ComboboxForm() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    });
+    })
   }
 
   return (
@@ -71,10 +69,10 @@ export function ComboboxForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="languages"
+          name="language"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Languages</FormLabel>
+              <FormLabel>Language</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -83,20 +81,14 @@ export function ComboboxForm() {
                       role="combobox"
                       className={cn(
                         "w-[200px] justify-between",
-                        !(field.value && field.value.length) &&
-                          "text-muted-foreground"
+                        !field.value && "text-muted-foreground"
                       )}
                     >
-                      {field.value && field.value.length
-                        ? field.value
-                            .map(
-                              (lang) =>
-                                languages.find(
-                                  (language) => language.value === lang
-                                )?.label
-                            )
-                            .join(", ")
-                        : "Select languages"}
+                      {field.value
+                        ? languages.find(
+                            (language) => language.value === field.value
+                          )?.label
+                        : "Select language"}
                       <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
@@ -114,23 +106,14 @@ export function ComboboxForm() {
                           value={language.label}
                           key={language.value}
                           onSelect={() => {
-                            const isSelected = field.value?.includes(
-                              language.value
-                            );
-                            const updatedLanguages = isSelected
-                              ? (field.value || []).filter(
-                                  (lang) => lang !== language.value
-                                )
-                              : [...(field.value || []), language.value];
-
-                            form.setValue("languages", updatedLanguages);
+                            form.setValue("language", language.value)
                           }}
                         >
                           {language.label}
                           <CheckIcon
                             className={cn(
                               "ml-auto h-4 w-4",
-                              (field.value || []).includes(language.value)
+                              language.value === field.value
                                 ? "opacity-100"
                                 : "opacity-0"
                             )}
@@ -142,7 +125,7 @@ export function ComboboxForm() {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                These are the languages that will be used in the dashboard.
+                This is the language that will be used in the dashboard.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -151,5 +134,5 @@ export function ComboboxForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  );
+  )
 }

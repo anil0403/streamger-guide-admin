@@ -19,6 +19,8 @@ import Link from "next/link";
 import { IP } from "@/lib/interceptor/admin_content/axios";
 import Image from "next/image";
 import { getLocations } from "@/lib/action/location/action";
+import { AddLocationDialog } from "@/components/dialog/location/add-location";
+import { DeleteLocationDialog } from "@/components/dialog/location/delete-location";
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
 }
@@ -32,18 +34,14 @@ const LocationsPage = async ({ searchParams }: ServicePageProps) => {
 
   return (
     <div className="hidden h-full flex-1 flex-col px-4 md:flex border-2 rounded-lg">
-      <h2 className="text-lg font-semibold py-2 border-b-2">
-        Current Services
-      </h2>
+      <h2 className="text-lg font-semibold py-2 border-b-2">All Locations</h2>
 
       <div className="space-y-4 py-4">
         <div className="flex justify-between items-center">
-          <Search placeholder="services" />
+          <Search placeholder="locations.." />
           <TablePagination />
 
-          <Button asChild size="sm">
-            <Link href="#">Add New Service</Link>
-          </Button>
+          <AddLocationDialog />
         </div>
         <div className="rounded-md border">
           <Table>
@@ -61,10 +59,7 @@ const LocationsPage = async ({ searchParams }: ServicePageProps) => {
                   <TableCell>{location?.name}</TableCell>
 
                   <TableCell className="space-x-4">
-
-                    <Button size="sm" variant="destructive">
-                      Delete
-                    </Button>
+                    <DeleteLocationDialog id={location?.id} />
                   </TableCell>
                 </TableRow>
               ))}

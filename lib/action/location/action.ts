@@ -18,8 +18,7 @@ export const getLocations = async (
   }
 };
 
-export const postLocation = async (formData: FormData) => {
-  "use server";
+export const postLocation = async (state: undefined, formData: FormData) => {
   const { name } = Object.fromEntries(formData);
   try {
     const response = await serviceAuthInstance.post(
@@ -29,22 +28,24 @@ export const postLocation = async (formData: FormData) => {
       }
     );
     console.log(response?.data);
+    return response?.data;
   } catch (error) {
     console.log("error");
   }
-  revalidatePath("/dashboard/location");
-  redirect("/dashboard/location");
+  revalidatePath("/location");
+  redirect("/location");
 };
 
-export const deleteLocation = async (formData: FormData) => {
+export const deleteLocation = async (state: undefined, formData: FormData) => {
   const { id } = Object.fromEntries(formData);
   try {
     const response = await serviceAuthInstance.delete(
       `/fill_contents/location/?pk=${id}`
     );
     console.log(response?.data);
+    return response?.data;
   } catch (error) {
     console.log(error);
   }
-  revalidatePath("/dashboard/language");
+  revalidatePath("/language");
 };
