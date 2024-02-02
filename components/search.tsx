@@ -30,7 +30,7 @@ const Search = ({ placeholder }: SearchProps) => {
       onChange={handleSearch}
       type="text"
       placeholder={`Filter ${placeholder}...`}
-      className=" w-[150px] lg:w-[250px]"
+      className=""
     />
   );
 };

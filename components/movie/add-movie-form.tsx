@@ -40,6 +40,10 @@ import {
 import { cn } from "@/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { ComboboxForm } from "./add-tv-shows-form";
+import { Calendar } from "@/components/ui/calendar";
+
+import Search from "../search";
+import ImageUploader from "../ImageUpload";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -47,7 +51,28 @@ const formSchema = z.object({
   ageRating: z.string(),
   duration: z.string(),
   description: z.string(),
+  producer: z.string(),
+  director: z.string(),
+  trailerLink: z.string(),
+  releaseDate: z.string(),
+  // audioLanguages
   audioLanguages: z.array(
+    z.string({
+      required_error: "Please select at least one language.",
+    })
+  ),
+  castOptions: z.array(
+    z.string({
+      required_error: "Please select at least one language.",
+    })
+  ),
+  locationOptions: z.array(
+    z.string({
+      required_error: "Please select at least one language.",
+    })
+  ),
+
+  genreOptions: z.array(
     z.string({
       required_error: "Please select at least one language.",
     })
@@ -58,18 +83,58 @@ const formSchema = z.object({
 
 type MovieFormValues = z.infer<typeof formSchema>;
 
-const AddMovieForm = () => {
-  const audioLanguages = [
-    { label: "English", value: "en" },
-    { label: "French", value: "fr" },
-    { label: "German", value: "de" },
-    { label: "Spanish", value: "es" },
-    { label: "Portuguese", value: "pt" },
-    { label: "Russian", value: "ru" },
-    { label: "Japanese", value: "ja" },
-    { label: "Korean", value: "ko" },
-    { label: "Chinese", value: "zh" },
-  ] as const;
+interface AddMovieFormProps {
+  languages: any;
+  casts: any;
+  locations: any;
+  services: any;
+  genres: any;
+}
+
+const AddMovieForm = ({
+  languages,
+  casts,
+  locations,
+  services,
+  genres,
+}: AddMovieFormProps) => {
+  // console.log("languages = ", languages);
+  // console.log("casts = ", casts);
+  // console.log("locations = ", locations);
+  // console.log("services = ", services);
+  // console.log("genres = ", genres);
+  // console.log("languages = ", languages);
+
+  const [icons, setIcons] = React.useState<string | null>(null);
+  const handleImageChange = (imageData: string | null) => {
+    setIcons(imageData);
+  };
+
+  const audioLanguages = languages.map((language: any) => ({
+    label: language.name,
+    value: language.name, // Assuming `id` is a unique identifier
+  }));
+
+  const genreOptions = genres.map((genre: any) => ({
+    label: genre.name,
+    value: genre.name, // Assuming `id` is a unique identifier
+  }));
+
+  const locationOptions = locations.map((location: any) => ({
+    label: location.name,
+    value: location.name, // Assuming `id` is a unique identifier
+  }));
+
+  const castOptions = casts.map((member: any) => ({
+    label: member.name,
+    value: member?.id.toString(),
+  }));
+
+  const serviceOptions = services.map((service: any) => ({
+    label: service.name,
+    value: service?.id.toString(),
+  }));
+
   const form = useForm<MovieFormValues>({
     resolver: zodResolver(formSchema),
     // defaultValues,
@@ -77,6 +142,12 @@ const AddMovieForm = () => {
   const onSubmit = async (data: MovieFormValues) => {
     console.log("onsubmit");
     console.log(data);
+    // formData.append("icons", icons as string);
+    // try {
+    //   await postService(formData);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   return (
     <div className="py-4">
@@ -142,6 +213,219 @@ const AddMovieForm = () => {
               )}
             />
 
+            {/* director */}
+            <FormField
+              control={form.control}
+              name="director"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Director</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter director" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* producer */}
+            <FormField
+              control={form.control}
+              name="producer"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Producer</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter producer" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Release Date */}
+            <FormField
+              control={form.control}
+              name="releaseDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Release Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      placeholder="Enter producer"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Trailer link */}
+            <FormField
+              control={form.control}
+              name="trailerLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Trailer Link</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Enter Trailer Link"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* service */}
+            <FormField
+              control={form.control}
+              name="service"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Service</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-[200px] justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? serviceOptions.find(
+                                (language: any) =>
+                                  language.value === field.value
+                              )?.label
+                            : "select service..."}
+                          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput
+                          placeholder="Search framework..."
+                          className="h-9"
+                        />
+                        <CommandEmpty>No service found.</CommandEmpty>
+                        <CommandGroup>
+                          {serviceOptions.map((language: any) => (
+                            <CommandItem
+                              value={language.label}
+                              key={language.value}
+                              onSelect={() => {
+                                form.setValue("service", language.value);
+                              }}
+                            >
+                              {language.label}
+                              <CheckIcon
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  language.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* casts */}
+            <div className="col-span-3">
+              <FormField
+                control={form.control}
+                name="castOptions"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Cast</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "justify-between",
+                              !(field.value && field.value.length) &&
+                                "text-muted-foreground"
+                            )}
+                          >
+                            {field.value && field.value.length
+                              ? field.value
+                                  .map(
+                                    (lang) =>
+                                      castOptions.find(
+                                        (language: any) =>
+                                          language.value === lang
+                                      )?.label
+                                  )
+                                  .join(", ")
+                              : "select cast..."}
+                            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <Search placeholder="cast" />
+                          <CommandEmpty>No cast found.</CommandEmpty>
+                          <CommandGroup>
+                            {castOptions.map((language: any) => (
+                              <CommandItem
+                                value={language.label}
+                                key={language.value}
+                                onSelect={() => {
+                                  const isSelected = field.value?.includes(
+                                    language.value
+                                  );
+                                  const updatedcastOptions = isSelected
+                                    ? (field.value || []).filter(
+                                        (lang) => lang !== language.value
+                                      )
+                                    : [...(field.value || []), language.value];
+
+                                  form.setValue(
+                                    "castOptions",
+                                    updatedcastOptions
+                                  );
+                                }}
+                              >
+                                {language.label}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    (field.value || []).includes(language.value)
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             {/* audioLanguages */}
             <div className="col-span-3">
               <FormField
@@ -167,7 +451,8 @@ const AddMovieForm = () => {
                                   .map(
                                     (lang) =>
                                       audioLanguages.find(
-                                        (language) => language.value === lang
+                                        (language: any) =>
+                                          language.value === lang
                                       )?.label
                                   )
                                   .join(", ")
@@ -179,12 +464,12 @@ const AddMovieForm = () => {
                       <PopoverContent className="w-[200px] p-0">
                         <Command>
                           <CommandInput
-                            placeholder="Search framework..."
+                            placeholder="Search language..."
                             className="h-9"
                           />
                           <CommandEmpty>No framework found.</CommandEmpty>
                           <CommandGroup>
-                            {audioLanguages.map((language) => (
+                            {audioLanguages.map((language: any) => (
                               <CommandItem
                                 value={language.label}
                                 key={language.value}
@@ -225,68 +510,173 @@ const AddMovieForm = () => {
               />
             </div>
 
-            {/* service */}
-            <FormField
-              control={form.control}
-              name="service"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Service</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-[200px] justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value
-                            ? audioLanguages.find(
-                                (language) => language.value === field.value
-                              )?.label
-                            : "select service..."}
-                          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <Command>
-                        <CommandInput
-                          placeholder="Search framework..."
-                          className="h-9"
-                        />
-                        <CommandEmpty>No framework found.</CommandEmpty>
-                        <CommandGroup>
-                          {audioLanguages.map((language) => (
-                            <CommandItem
-                              value={language.label}
-                              key={language.value}
-                              onSelect={() => {
-                                form.setValue("service", language.value);
-                              }}
-                            >
-                              {language.label}
-                              <CheckIcon
-                                className={cn(
-                                  "ml-auto h-4 w-4",
-                                  language.value === field.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Genre */}
+            <div className="col-span-3">
+              <FormField
+                control={form.control}
+                name="genreOptions"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Select Genre</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "justify-between",
+                              !(field.value && field.value.length) &&
+                                "text-muted-foreground"
+                            )}
+                          >
+                            {field.value && field.value.length
+                              ? field.value
+                                  .map(
+                                    (lang) =>
+                                      genreOptions.find(
+                                        (language: any) =>
+                                          language.value === lang
+                                      )?.label
+                                  )
+                                  .join(", ")
+                              : "select audio languages..."}
+                            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search genre..."
+                            className="h-9"
+                          />
+                          <CommandEmpty>No genre found.</CommandEmpty>
+                          <CommandGroup>
+                            {genreOptions.map((language: any) => (
+                              <CommandItem
+                                value={language.label}
+                                key={language.value}
+                                onSelect={() => {
+                                  const isSelected = field.value?.includes(
+                                    language.value
+                                  );
+                                  const updatedgenreOptions = isSelected
+                                    ? (field.value || []).filter(
+                                        (lang) => lang !== language.value
+                                      )
+                                    : [...(field.value || []), language.value];
+
+                                  form.setValue(
+                                    "genreOptions",
+                                    updatedgenreOptions
+                                  );
+                                }}
+                              >
+                                {language.label}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    (field.value || []).includes(language.value)
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* location */}
+            <div className="col-span-3">
+              <FormField
+                control={form.control}
+                name="locationOptions"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Select Location</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "justify-between",
+                              !(field.value && field.value.length) &&
+                                "text-muted-foreground"
+                            )}
+                          >
+                            {field.value && field.value.length
+                              ? field.value
+                                  .map(
+                                    (lang) =>
+                                      locationOptions.find(
+                                        (language: any) =>
+                                          language.value === lang
+                                      )?.label
+                                  )
+                                  .join(", ")
+                              : "select location..."}
+                            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search location..."
+                            className="h-9"
+                          />
+                          <CommandEmpty>No genre found.</CommandEmpty>
+                          <CommandGroup>
+                            {locationOptions.map((language: any) => (
+                              <CommandItem
+                                value={language.label}
+                                key={language.value}
+                                onSelect={() => {
+                                  const isSelected = field.value?.includes(
+                                    language.value
+                                  );
+                                  const updatedlocationOptions = isSelected
+                                    ? (field.value || []).filter(
+                                        (lang) => lang !== language.value
+                                      )
+                                    : [...(field.value || []), language.value];
+
+                                  form.setValue(
+                                    "locationOptions",
+                                    updatedlocationOptions
+                                  );
+                                }}
+                              >
+                                {language.label}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    (field.value || []).includes(language.value)
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="col-span-3">
               <FormField
@@ -328,6 +718,7 @@ const AddMovieForm = () => {
                 </FormItem>
               )}
             />
+            <ImageUploader onImageChange={handleImageChange} />
           </div>
 
           <Button className="ml-auto" type="submit">
