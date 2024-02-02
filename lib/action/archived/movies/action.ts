@@ -10,7 +10,7 @@ export const getArchivedMovies = async (
     const response = await serviceAuthInstance.get(
       `/content/?types=movies&is_archived=True&search_query=${searchQuery}&page=${page}`
     );
-
+    console.log("archived mopvies = ", response?.data);
     return response?.data?.data;
   } catch (error) {
     console.log(error);

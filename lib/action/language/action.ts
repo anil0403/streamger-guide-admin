@@ -22,7 +22,7 @@ export const getLanguages = async (
 };
 
 // add language
-export const postLanguage = async (formData: FormData) => {
+export const postLanguage = async (state: undefined, formData: FormData) => {
   const { name } = Object.fromEntries(formData);
   try {
     const response = await serviceAuthInstance.post(
@@ -31,24 +31,25 @@ export const postLanguage = async (formData: FormData) => {
         name: name,
       }
     );
-    console.log("post language = ", response?.data);
+    revalidatePath("/languages");
+
+    return response?.data;
   } catch (error) {
     console.log("error");
   }
-
-  revalidatePath("/dashboard/language");
-  redirect("/dashboard/language");
 };
 
-export const deleteLanguage = async (formData: FormData) => {
+export const deleteLanguage = async (state: undefined, formData: FormData) => {
   const { id } = Object.fromEntries(formData);
   try {
     const response = await serviceAuthInstance.delete(
       `/fill_contents/audiolanguages/?pk=${id}`
     );
+    revalidatePath("/languages");
+
     console.log(response);
+    return response?.data;
   } catch (error) {
     console.log(error);
   }
-  revalidatePath("/dashboard/language");
 };

@@ -27,13 +27,12 @@ export const postLocation = async (state: undefined, formData: FormData) => {
         name: name,
       }
     );
+    revalidatePath("/locations");
     console.log(response?.data);
     return response?.data;
   } catch (error) {
     console.log("error");
   }
-  revalidatePath("/location");
-  redirect("/location");
 };
 
 export const deleteLocation = async (state: undefined, formData: FormData) => {
@@ -43,9 +42,9 @@ export const deleteLocation = async (state: undefined, formData: FormData) => {
       `/fill_contents/location/?pk=${id}`
     );
     console.log(response?.data);
+    revalidatePath("/locations");
     return response?.data;
   } catch (error) {
     console.log(error);
   }
-  revalidatePath("/language");
 };

@@ -8,6 +8,7 @@ export const getCasts = async (searchQuery: string | null, page: string) => {
     const response = await serviceAuth.get(
       `/fill_contents/cast/?search_query=${searchQuery}&page=${page}`
     );
+    console.log("cast = ", response?.data);
     return response?.data?.data;
   } catch (error) {
     console.log("error");
@@ -20,11 +21,11 @@ export const deleteCast = async (formData: FormData) => {
     const response = await serviceAuthInstance.delete(
       `/fill_contents/cast/?pk=${id}`
     );
+    revalidatePath("/cast");
     console.log(response);
   } catch (error) {
     console.log(error);
   }
-  revalidatePath("/dashboard/cast");
 };
 
 export const postCast = async (formData: FormData) => {
@@ -37,12 +38,10 @@ export const postCast = async (formData: FormData) => {
       picture: profile,
     });
 
+    revalidatePath("/cast");
     console.log("post service = ", response?.data);
     // return response;
   } catch (error) {
     console.log(error);
   }
-
-  revalidatePath("/dashboard/cast");
-  redirect("/dashboard/cast");
 };

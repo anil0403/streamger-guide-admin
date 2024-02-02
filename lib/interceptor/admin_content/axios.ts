@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // content microservice
-export const IP = "http://192.168.1.73:8000"; // local
-// export const IP = "http://13.201.19.240:8001"; // cloud
+// export const IP = "http://192.168.1.73:8000"; // local
+export const IP = "http://13.201.166.8:8001"; // cloud
 
 export const ADMIN_LOGIN_URL = `${IP}/api/v1`;
 
@@ -34,7 +34,7 @@ serviceAuthInstance.interceptors.request.use(
     if (!config.headers["Authorization"]) {
       config.headers[
         "Authorization"
-      ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2ODEzNTg1LCJpYXQiOjE3MDY3NzAzODUsImp0aSI6IjA3OGU4Mzc1NWE4MDQ1YmQ5ZDkwNmNkNDY1NzZjMTNjIiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.2w3keKbhxjsegzP25TT7YzNdECzH8Zy3CwVk7Lm9A-0`;
+      ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2ODk1NTQxLCJpYXQiOjE3MDY4NTIzNDEsImp0aSI6Ijk2YjFjY2IzN2EyMjQyMTg4Mzk0ZWZmMzdmNmE0NDQwIiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.7c2w0IIjerPp5aUO_Rct9jjPRUCkE98XCLEZV2EJoTY`;
     }
     return config;
   },

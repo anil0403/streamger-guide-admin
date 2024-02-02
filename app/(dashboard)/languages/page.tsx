@@ -1,7 +1,5 @@
 import Search from "@/components/search";
-import TableData from "@/components/table-data";
 import TablePagination from "@/components/table-pagination";
-import { Button } from "@/components/ui/button";
 import React from "react";
 import {
   Table,
@@ -15,11 +13,9 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import Link from "next/link";
-import { IP } from "@/lib/interceptor/admin_content/axios";
-import Image from "next/image";
-
 import { getLanguages } from "@/lib/action/language/action";
+import { AddLanguageDiaglog } from "@/components/dialog/language/add-language";
+import { DeleteLanguageDialog } from "@/components/dialog/language/delete-language";
 
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
@@ -29,7 +25,7 @@ const LanguagesPage = async ({ searchParams }: ServicePageProps) => {
   const searchQuery = searchParams?.searchQuery?.toString() || "";
   const page = searchParams?.page?.toString() || "1";
   const languages = await getLanguages(searchQuery, page);
-  // console.log("services = ", services);
+  console.log("lang  = ", languages);
   return (
     <div className="hidden h-full flex-1 flex-col px-4 md:flex border-2 rounded-lg">
       <h2 className="text-lg font-semibold py-2 border-b-2">
@@ -41,9 +37,7 @@ const LanguagesPage = async ({ searchParams }: ServicePageProps) => {
           <Search placeholder="languages" />
           <TablePagination />
 
-          <Button asChild size="sm">
-            <Link href="#">Add New Service</Link>
-          </Button>
+          <AddLanguageDiaglog />
         </div>
         <div className="rounded-md border">
           <Table>
@@ -60,9 +54,7 @@ const LanguagesPage = async ({ searchParams }: ServicePageProps) => {
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{language?.name}</TableCell>
                   <TableCell className="space-x-4">
-                    <Button size="sm" variant="destructive">
-                      Delete
-                    </Button>
+                    <DeleteLanguageDialog id={language.id} />
                   </TableCell>
                 </TableRow>
               ))}

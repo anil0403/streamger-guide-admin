@@ -19,6 +19,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { IP } from "@/lib/interceptor/admin_content/axios";
 import Image from "next/image";
+import { AddServiceDialog } from "@/components/dialog/service/add-service";
+import { DeleteServiceDialog } from "@/components/dialog/service/delete-service";
 
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
@@ -40,9 +42,7 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
           <Search placeholder="services" />
           <TablePagination />
 
-          <Button asChild size="sm">
-            <Link href="#">Add New Service</Link>
-          </Button>
+          <AddServiceDialog />
         </div>
         <div className="rounded-md border">
           <Table>
@@ -75,9 +75,7 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
                     </Avatar>
                   </TableCell>
                   <TableCell className="space-x-4">
-                    <Button size="sm" variant="destructive">
-                      Delete
-                    </Button>
+                    <DeleteServiceDialog id={service?.id} />
                   </TableCell>
                 </TableRow>
               ))}

@@ -2,7 +2,7 @@
 import serviceAuthInstance from "@/lib/interceptor/admin_content/axios";
 import { serviceAuth } from "@/lib/interceptor/admin_content/axios";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+
 export const getServices = async (searchQuery: string | null, page: string) => {
   try {
     const response = await serviceAuth.get(
@@ -15,7 +15,6 @@ export const getServices = async (searchQuery: string | null, page: string) => {
 };
 
 export const postService = async (formData: FormData) => {
-  // Get values directly from FormData
   const name = formData.get("name");
   const picture = formData.get("icons");
 
@@ -24,24 +23,23 @@ export const postService = async (formData: FormData) => {
       name: name,
       picture: picture,
     });
+    revalidatePath("/services");
     console.log(response?.data);
   } catch (error) {
     console.log(error);
   }
-
-  revalidatePath("/dashboard/services");
-  redirect("/dashboard/services");
 };
 
-export const deleteService = async (formData: FormData) => {
+export const deleteService = async (state: undefined, formData: FormData) => {
   const { id } = Object.fromEntries(formData);
   try {
     const response = await serviceAuthInstance.delete(
       `/fill_contents/ott/?pk=${id}`
     );
+    revalidatePath("/services");
     console.log(response?.data);
+    return response?.data;
   } catch (error) {
     console.log(error);
   }
-  revalidatePath("/dashboard/services");
 };
