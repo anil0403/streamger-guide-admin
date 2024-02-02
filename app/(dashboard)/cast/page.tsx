@@ -19,6 +19,8 @@ import Link from "next/link";
 import { IP } from "@/lib/interceptor/admin_content/axios";
 import Image from "next/image";
 import { getCasts } from "@/lib/action/cast/action";
+import { DeleteCastDialog } from "@/components/dialog/cast/delete-cast";
+import { AddCastDialog } from "@/components/dialog/cast/add-cast";
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
 }
@@ -32,18 +34,14 @@ const CastPage = async ({ searchParams }: ServicePageProps) => {
 
   return (
     <div className="hidden h-full flex-1 flex-col px-4 md:flex border-2 rounded-lg">
-      <h2 className="text-lg font-semibold py-2 border-b-2">
-        Current Services
-      </h2>
+      <h2 className="text-lg font-semibold py-2 border-b-2">All casts</h2>
 
       <div className="space-y-4 py-4">
         <div className="flex justify-between items-center">
           <Search placeholder="services" />
           <TablePagination />
 
-          <Button asChild size="sm">
-            <Link href="#">Add New Service</Link>
-          </Button>
+          <AddCastDialog />
         </div>
         <div className="rounded-md border">
           <Table>
@@ -51,22 +49,29 @@ const CastPage = async ({ searchParams }: ServicePageProps) => {
               <TableRow>
                 <TableHead>S.N</TableHead>
                 <TableHead>Name</TableHead>
+                <TableHead>Avatar</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {casts?.map((cast: any, index: any) => (
-                <TableRow key={index}>
-                  <TableCell>{10 * paginationPage + (index + 1)}</TableCell>
-                  <TableCell>{cast?.name}</TableCell>
-
-                  <TableCell className="space-x-4">
-                    <Button size="sm" variant="destructive">
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {casts?.map((cast: any, index: any) => {
+                console.log(`${IP}/${cast?.picture}`);
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{10 * paginationPage + (index + 1)}</TableCell>
+                    <TableCell>{cast?.name}</TableCell>
+                    <TableCell>
+                      <Avatar>
+                        <AvatarImage src={`${IP}/${cast?.picture}`} />
+                        <AvatarFallback>P</AvatarFallback>
+                      </Avatar>
+                    </TableCell>
+                    <TableCell className="space-x-4">
+                      <DeleteCastDialog id={cast?.id} />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>

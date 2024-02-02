@@ -29,7 +29,7 @@ const LanguagesPage = async ({ searchParams }: ServicePageProps) => {
   return (
     <div className="hidden h-full flex-1 flex-col px-4 md:flex border-2 rounded-lg">
       <h2 className="text-lg font-semibold py-2 border-b-2">
-        Current Services
+        All Languages
       </h2>
 
       <div className="space-y-4 py-4">

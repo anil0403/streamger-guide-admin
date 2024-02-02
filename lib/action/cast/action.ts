@@ -15,14 +15,15 @@ export const getCasts = async (searchQuery: string | null, page: string) => {
   }
 };
 
-export const deleteCast = async (formData: FormData) => {
+export const deleteCast = async (state: undefined, formData: FormData) => {
   const { id } = Object.fromEntries(formData);
   try {
     const response = await serviceAuthInstance.delete(
       `/fill_contents/cast/?pk=${id}`
     );
     revalidatePath("/cast");
-    console.log(response);
+    console.log(response?.data);
+    return response?.data;
   } catch (error) {
     console.log(error);
   }
@@ -30,7 +31,7 @@ export const deleteCast = async (formData: FormData) => {
 
 export const postCast = async (formData: FormData) => {
   const name = formData.get("name");
-  const profile = formData.get("profile");
+  const profile = formData.get("icons");
   console.log(name, profile);
   try {
     const response = await serviceAuthInstance.post("/fill_contents/cast/", {
