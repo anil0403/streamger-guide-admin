@@ -25,7 +25,7 @@ interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
 }
 
-const ServicesPage = async ({ searchParams }: ServicePageProps) => {
+const ArchivedMoviesPage = async ({ searchParams }: ServicePageProps) => {
   const searchQuery = searchParams?.searchQuery?.toString() || "";
   const page = searchParams?.page?.toString() || "1";
   // const services = await getServices(searchQuery, page);
@@ -64,8 +64,8 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
                   <TableCell>{(movie?.genre).join(", ")}</TableCell>
                   <TableCell>{movie?.rating}</TableCell>
                   <TableCell className="space-x-4 min-w-fit">
-                    <Button size="sm" variant="secondary">
-                      View
+                    <Button size="sm" variant="secondary" asChild>
+                      <Link href={`/archived/movies/${movie?.id}`}>View</Link>
                     </Button>
                     <Button size="sm" variant="destructive">
                       Delete
@@ -81,4 +81,4 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
   );
 };
 
-export default ServicesPage;
+export default ArchivedMoviesPage;

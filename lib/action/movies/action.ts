@@ -7,7 +7,21 @@ export const getMovies = async () => {
     const response = await serviceAuthInstance.get(
       "/content/?types=movies&is_archived=False"
     );
+    console.log("movies = ", response?.data?.data);
     return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getMovie = async (movieId: any) => {
+  console.log("id = ", movieId)
+  try {
+    const response = await serviceAuthInstance.get(
+      `/content/?types=movies&pk=${movieId}`
+    );
+    console.log("movies from action = ", response?.data);
+    return response?.data?.data
   } catch (error) {
     console.log(error);
   }

@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -9,8 +10,10 @@ import {
 import { ModeToggle } from "@/components/ui/theme-toggle";
 
 import { count } from "@/lib/action/count/action";
+import { redirect, useRouter } from "next/navigation";
 
 export default async function Home() {
+  const router = useRouter();
   const counts = await count();
   console.log("counts = ", counts);
   return (
@@ -21,7 +24,10 @@ export default async function Home() {
       </div>
       <div className="flex items-center flex-wrap gap-10">
         {/* movies */}
-        <Card className="w-48 hover:scale-110 transition-all duration-300">
+        <Card
+          onClick={() => router.push("/movies")}
+          className="w-48 hover:scale-110 transition-all duration-300 cursor-pointer"
+        >
           <CardHeader>
             <CardTitle className="text-center">Movies</CardTitle>
           </CardHeader>
