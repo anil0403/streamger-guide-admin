@@ -26,11 +26,11 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
       <h2 className="text-lg font-semibold py-2 border-b-2">Add New Movie</h2>
       <div>
         <AddMovieForm
-          languages={languages}
-          casts={casts}
-          locations={locations}
-          services={services}
-          genres={genres}
+          languagesProps={languages}
+          castsProps={casts}
+          locationsProps={locations}
+          servicesProps={services}
+          genresProps={genres}
         />
       </div>
     </div>

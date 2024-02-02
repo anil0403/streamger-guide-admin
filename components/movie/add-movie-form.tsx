@@ -44,6 +44,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 import Search from "../search";
 import ImageUploader from "../ImageUpload";
+import { postArchivedMovie } from "@/lib/action/archived/movies/action";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -55,7 +56,6 @@ const formSchema = z.object({
   director: z.string(),
   trailerLink: z.string(),
   releaseDate: z.string(),
-  // audioLanguages
   audioLanguages: z.array(
     z.string({
       required_error: "Please select at least one language.",
@@ -84,21 +84,21 @@ const formSchema = z.object({
 type MovieFormValues = z.infer<typeof formSchema>;
 
 interface AddMovieFormProps {
-  languages: any;
-  casts: any;
-  locations: any;
-  services: any;
-  genres: any;
+  languagesProps: any;
+  castsProps: any;
+  locationsProps: any;
+  servicesProps: any;
+  genresProps: any;
 }
 
 const AddMovieForm = ({
-  languages,
-  casts,
-  locations,
-  services,
-  genres,
+  languagesProps,
+  castsProps,
+  locationsProps,
+  servicesProps,
+  genresProps,
 }: AddMovieFormProps) => {
-  // console.log("languages = ", languages);
+  console.log("languages = ", languagesProps);
   // console.log("casts = ", casts);
   // console.log("locations = ", locations);
   // console.log("services = ", services);
@@ -110,27 +110,27 @@ const AddMovieForm = ({
     setIcons(imageData);
   };
 
-  const audioLanguages = languages.map((language: any) => ({
+  const languages = languagesProps?.map((language: any) => ({
     label: language.name,
     value: language.name, // Assuming `id` is a unique identifier
   }));
 
-  const genreOptions = genres.map((genre: any) => ({
+  const genres = genresProps?.map((genre: any) => ({
     label: genre.name,
     value: genre.name, // Assuming `id` is a unique identifier
   }));
 
-  const locationOptions = locations.map((location: any) => ({
+  const locations = locationsProps?.map((location: any) => ({
     label: location.name,
     value: location.name, // Assuming `id` is a unique identifier
   }));
 
-  const castOptions = casts.map((member: any) => ({
+  const casts = castsProps?.map((member: any) => ({
     label: member.name,
     value: member?.id.toString(),
   }));
 
-  const serviceOptions = services.map((service: any) => ({
+  const services = servicesProps?.map((service: any) => ({
     label: service.name,
     value: service?.id.toString(),
   }));
@@ -142,18 +142,48 @@ const AddMovieForm = ({
   const onSubmit = async (data: MovieFormValues) => {
     console.log("onsubmit");
     console.log(data);
+    const formData = new FormData();
+
+    data?.audioLanguages?.map((language) =>
+      formData.append("audiolanguages", language)
+    );
+
+    data?.castOptions?.map((cast) => formData.append("cast", cast));
+
+    data?.locationOptions?.map((location) =>
+      formData.append("location", location)
+    );
+
+    data?.genreOptions?.map((genre) => formData.append("genre", genre));
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("age_rating", data.ageRating);
+    formData.append("release_date", data.releaseDate);
+    formData.append("director", data.director);
+    formData.append("rating", data.rating);
+    formData.append("duration", data.duration);
+
+
+    
+    formData.append("producer", data.producer);
+    formData.append("thumbnail", icons as string);
+    formData.append("service", data.service);
+    formData.append("isArchived", String(data.isArchived));
+
     // formData.append("icons", icons as string);
     // try {
     //   await postService(formData);
     // } catch (error) {
     //   console.log(error);
-    // }
+    await postArchivedMovie(formData);
   };
   return (
     <div className="py-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="grid grid-cols-3 gap-8 min-h-fit">
+            {/* title */}
             <FormField
               control={form.control}
               name="title"
@@ -295,12 +325,12 @@ const AddMovieForm = ({
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-[200px] justify-between",
+                            " justify-between",
                             !field.value && "text-muted-foreground"
                           )}
                         >
                           {field.value
-                            ? serviceOptions.find(
+                            ? services.find(
                                 (language: any) =>
                                   language.value === field.value
                               )?.label
@@ -317,7 +347,7 @@ const AddMovieForm = ({
                         />
                         <CommandEmpty>No service found.</CommandEmpty>
                         <CommandGroup>
-                          {serviceOptions.map((language: any) => (
+                          {services?.map((language: any) => (
                             <CommandItem
                               value={language.label}
                               key={language.value}
@@ -369,7 +399,7 @@ const AddMovieForm = ({
                               ? field.value
                                   .map(
                                     (lang) =>
-                                      castOptions.find(
+                                      casts.find(
                                         (language: any) =>
                                           language.value === lang
                                       )?.label
@@ -385,7 +415,7 @@ const AddMovieForm = ({
                           <Search placeholder="cast" />
                           <CommandEmpty>No cast found.</CommandEmpty>
                           <CommandGroup>
-                            {castOptions.map((language: any) => (
+                            {casts?.map((language: any) => (
                               <CommandItem
                                 value={language.label}
                                 key={language.value}
@@ -450,7 +480,7 @@ const AddMovieForm = ({
                               ? field.value
                                   .map(
                                     (lang) =>
-                                      audioLanguages.find(
+                                      languages.find(
                                         (language: any) =>
                                           language.value === lang
                                       )?.label
@@ -469,7 +499,7 @@ const AddMovieForm = ({
                           />
                           <CommandEmpty>No framework found.</CommandEmpty>
                           <CommandGroup>
-                            {audioLanguages.map((language: any) => (
+                            {languages?.map((language: any) => (
                               <CommandItem
                                 value={language.label}
                                 key={language.value}
@@ -534,7 +564,7 @@ const AddMovieForm = ({
                               ? field.value
                                   .map(
                                     (lang) =>
-                                      genreOptions.find(
+                                      genres.find(
                                         (language: any) =>
                                           language.value === lang
                                       )?.label
@@ -553,7 +583,7 @@ const AddMovieForm = ({
                           />
                           <CommandEmpty>No genre found.</CommandEmpty>
                           <CommandGroup>
-                            {genreOptions.map((language: any) => (
+                            {genres?.map((language: any) => (
                               <CommandItem
                                 value={language.label}
                                 key={language.value}
@@ -618,7 +648,7 @@ const AddMovieForm = ({
                               ? field.value
                                   .map(
                                     (lang) =>
-                                      locationOptions.find(
+                                      locations.find(
                                         (language: any) =>
                                           language.value === lang
                                       )?.label
@@ -637,7 +667,7 @@ const AddMovieForm = ({
                           />
                           <CommandEmpty>No genre found.</CommandEmpty>
                           <CommandGroup>
-                            {locationOptions.map((language: any) => (
+                            {locations?.map((language: any) => (
                               <CommandItem
                                 value={language.label}
                                 key={language.value}
@@ -678,6 +708,7 @@ const AddMovieForm = ({
               />
             </div>
 
+            {/* description */}
             <div className="col-span-3">
               <FormField
                 control={form.control}
@@ -697,6 +728,7 @@ const AddMovieForm = ({
               />
             </div>
 
+            {/* isArchivee */}
             <FormField
               control={form.control}
               name="isArchived"

@@ -17,7 +17,6 @@ export const getServices = async (searchQuery: string | null, page: string) => {
 export const postService = async (formData: FormData) => {
   const name = formData.get("name");
   const picture = formData.get("icons");
-
   try {
     const response = await serviceAuthInstance.post("/fill_contents/ott/", {
       name: name,
