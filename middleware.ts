@@ -8,7 +8,7 @@ export default withAuth(function middleware(req) {}, {
     authorized: ({ token }) => !!token,
   },
   pages: {
-    signIn: "/languages",
+    signIn: "/login",
     // signOut: "/login",
   },
 });
@@ -24,6 +24,5 @@ export const config = {
      */
     "/((?!api|_next/static|_next/image|favicon.ico|login|signup|forget|verify|assets/cover.jpg).*)",
     // "/wallet/"
-    
   ],
 };

@@ -62,7 +62,7 @@ const CastPage = async ({ searchParams }: ServicePageProps) => {
                     <TableCell>{cast?.name}</TableCell>
                     <TableCell>
                       <Avatar>
-                        <AvatarImage src={`${IP}/${cast?.picture}`} />
+                        <AvatarImage src={`${IP}${cast?.picture}`} />
                         <AvatarFallback>P</AvatarFallback>
                       </Avatar>
                     </TableCell>

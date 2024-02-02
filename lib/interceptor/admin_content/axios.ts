@@ -1,8 +1,10 @@
 import axios from "axios";
-
+import { cookies } from "next/headers";
+import { useSession } from "next-auth/react";
+import { getProviders } from "next-auth/react";
 // content microservice
 // export const IP = "http://192.168.1.73:8000"; // local
-export const IP = "http://13.201.166.8:8001"; // cloud
+export const IP = "http://3.109.157.254:8001"; // cloud
 
 export const ADMIN_LOGIN_URL = `${IP}/api/v1`;
 
@@ -31,10 +33,15 @@ const serviceAuthInstance = axios.create({
 // Request interceptor
 serviceAuthInstance.interceptors.request.use(
   async (config) => {
+    // const { data: session } = useSession();
+    // console.log("session = ", session);
+    // const providers = await getProviders()
+    // console.log("Providers", providers)
+    // const cookieStore = cookies();
+    // const token = cookieStore.get("access");
+    // console.log("token = ", token);
     if (!config.headers["Authorization"]) {
-      config.headers[
-        "Authorization"
-      ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2ODk1NTQxLCJpYXQiOjE3MDY4NTIzNDEsImp0aSI6Ijk2YjFjY2IzN2EyMjQyMTg4Mzk0ZWZmMzdmNmE0NDQwIiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.7c2w0IIjerPp5aUO_Rct9jjPRUCkE98XCLEZV2EJoTY`;
+      config.headers["Authorization"] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2OTAxNzMwLCJpYXQiOjE3MDY4NTg1MzAsImp0aSI6ImFiMWI0YzAzMzQwYjRhYTNiODhmZWU3NWY1NDFlYWIwIiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.UBqG6Cy6-RFpAzi6p_RMVEPjlbkrbMakgDxnA1_8CnA`;
     }
     return config;
   },

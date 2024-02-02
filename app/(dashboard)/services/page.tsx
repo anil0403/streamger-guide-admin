@@ -68,7 +68,7 @@ const ServicesPage = async ({ searchParams }: ServicePageProps) => {
                   alt={service?.name}
                 /> */}
                       <AvatarImage
-                        src={`${IP}/${service?.picture}`}
+                        src={`${IP}${service?.picture}`}
                         alt="@shadcn"
                       />
                       <AvatarFallback>P</AvatarFallback>

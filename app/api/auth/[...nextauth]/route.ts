@@ -2,6 +2,7 @@ import { AuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { adminAuth } from "@/lib/interceptor/admin_content/axios";
+import { getProviders } from "next-auth/react"
 const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
@@ -36,9 +37,11 @@ const authOptions: AuthOptions = {
           console.log(res.data.message);
           throw new Error(res.data.message);
         }
+
         const user = await res.data.data;
         console.log(user);
         const token = await res.data.token;
+
         return { ...user, ...token };
       },
     }),
@@ -56,6 +59,7 @@ const authOptions: AuthOptions = {
     },
     async session({ session, token, user }) {
       session.user = token as any;
+      session.accessToken = token as any;
       return session;
     },
   },

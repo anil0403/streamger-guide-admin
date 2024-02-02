@@ -28,6 +28,7 @@ const Login = () => {
         password: password,
         redirect: false,
       });
+      console.log("response form signin = ", response)
       if (response?.status === 200) {
         router.push("/");
         toast({

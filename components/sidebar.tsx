@@ -9,11 +9,12 @@ import {
   MdSettings,
   MdSupervisedUserCircle,
 } from "react-icons/md";
-import { FaLanguage, FaPlay, FaUserFriends } from "react-icons/fa";
+import { FaBookOpen, FaLanguage, FaPlay, FaUserFriends } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { Logout } from "./dialog/logout/logout";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -73,6 +74,11 @@ const Sidebar = () => {
           icon: <FaPlay />,
         },
         {
+          title: "Genre",
+          path: "/genre",
+          icon: <FaBookOpen />,
+        },
+        {
           title: "Locations",
           path: "/locations",
           icon: <FaLocationDot />,
@@ -86,7 +92,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-between py-5 px-3  border-r min-h-screen ">
+    <div className="flex flex-col justify-between py-5 px-3 border-r max-h-screen">
       <Image
         className="pl-4"
         src="/assets/logo.svg"
@@ -94,10 +100,10 @@ const Sidebar = () => {
         height={20}
         width={150}
       />
-      <div className="py-2">
+      <ScrollArea className="py-4">
         {menuItems.map((item: any) => (
-          <div key={item.title}>
-            <h2 className="mb-2 px-4 text-sm font-medium tracking-tight text-muted-foreground">
+          <div key={item.title} className="py-1">
+            <h2 className="px-4 py-1 text-sm font-medium tracking-tight text-muted-foreground">
               {item.title}
             </h2>
             <div className="space-y-1">
@@ -118,15 +124,9 @@ const Sidebar = () => {
             </div>
           </div>
         ))}
-      </div>
+      </ScrollArea>
       <div>
-        <Button
-          variant="outline"
-          className="w-full justify-between gap-3 text-md"
-        >
-          Anil Shrestha
-          <MdSettings size={25} />
-        </Button>
+        <Logout />
       </div>
     </div>
   );
