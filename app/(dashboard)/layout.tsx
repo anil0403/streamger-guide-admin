@@ -9,9 +9,9 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="grid grid-cols-6">
+    <div className="grid md:grid-cols-4 lg:grid-cols-6">
       <Sidebar />
-      <ScrollArea className="col-span-5 px-5  py-2 max-h-screen">
+      <ScrollArea className=" md:col-span-3 lg:col-span-5 px-5  py-2 max-h-screen">
         {children}
       </ScrollArea>
       {/* <div className=""></div> */}

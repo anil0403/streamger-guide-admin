@@ -1,7 +1,7 @@
 "use server";
 import { serviceAuth } from "@/lib/interceptor/admin_content/axios";
 import serviceAuthInstance from "@/lib/interceptor/admin_content/axios";
-import { title } from "process";
+import { redirect } from "next/navigation";
 
 export const getArchivedMovies = async (
   searchQuery: string | null,
@@ -59,7 +59,6 @@ export const postArchivedMovie = async (formData: FormData) => {
 
   console.log("audiolanguages = ", audiolanguages);
 
-  const newFormData = new FormData();
 
   try {
     const response = await serviceAuthInstance.post(
@@ -83,6 +82,7 @@ export const postArchivedMovie = async (formData: FormData) => {
         release_date: release_date.toString(),
       }
     );
+    redirect("/archived/movies")
     console.log(response?.data);
   } catch (error) {
     console.log(error);
