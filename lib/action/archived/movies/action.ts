@@ -1,6 +1,7 @@
 "use server";
 import { serviceAuth } from "@/lib/interceptor/admin_content/axios";
 import serviceAuthInstance from "@/lib/interceptor/admin_content/axios";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const getArchivedMovies = async (
@@ -59,7 +60,6 @@ export const postArchivedMovie = async (formData: FormData) => {
 
   console.log("audiolanguages = ", audiolanguages);
 
-
   try {
     const response = await serviceAuthInstance.post(
       "/content/guide/?movies=True",
@@ -82,8 +82,9 @@ export const postArchivedMovie = async (formData: FormData) => {
         release_date: release_date.toString(),
       }
     );
-    redirect("/archived/movies")
     console.log(response?.data);
+    // revalidatePath("/archived/movies");
+    // redirect("/archived/movies");
   } catch (error) {
     console.log(error);
   }

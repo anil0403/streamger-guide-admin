@@ -45,6 +45,7 @@ import { Calendar } from "@/components/ui/calendar";
 import Search from "../search";
 import ImageUploader from "../ImageUpload";
 import { postArchivedMovie } from "@/lib/action/archived/movies/action";
+import Image from "next/image";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -90,6 +91,7 @@ interface UpdateMovieFormProps {
   servicesProps: any;
   genresProps: any;
   movieId: any;
+  movie: any;
 }
 
 const UpdateMovieForm = ({
@@ -99,6 +101,7 @@ const UpdateMovieForm = ({
   servicesProps,
   genresProps,
   movieId,
+  movie,
 }: UpdateMovieFormProps) => {
   console.log("languages = ", languagesProps);
   // console.log("casts = ", casts);
@@ -106,6 +109,9 @@ const UpdateMovieForm = ({
   // console.log("services = ", services);
   // console.log("genres = ", genres);
   // console.log("languages = ", languages);
+
+  console.log("movie id = ", movieId);
+  console.log("movie from update movie page = ", movie?.cast);
 
   const [icons, setIcons] = React.useState<string | null>(null);
   const handleImageChange = (imageData: string | null) => {
@@ -129,7 +135,7 @@ const UpdateMovieForm = ({
 
   const casts = castsProps?.map((member: any) => ({
     label: member.name,
-    value: member?.id.toString(),
+    value: member?.name,
   }));
 
   const services = servicesProps?.map((service: any) => ({
@@ -137,9 +143,37 @@ const UpdateMovieForm = ({
     value: service?.id.toString(),
   }));
 
+  // const defaultValues = {
+  //   title: movie?.title
+  //   // rating: movie?.rating,
+  //   // ageRating: movie?.agerating,
+  //   // duration: movie?.duration,
+  //   // description: movie?.description,
+  //   // producer: movie?.producer,
+  //   // director: movie?.director,
+  //   // trailerLink: movie?.trailer_link,
+  //   // releaseDate: movie?.release_date,
+  // };
+
+  // console.log("defaultValues = ", defaultValues);
+
   const form = useForm<MovieFormValues>({
     resolver: zodResolver(formSchema),
-    // defaultValues,
+    defaultValues: {
+      title: movie?.title,
+      rating: movie?.rating.toString(),
+      ageRating: movie?.agerating.toString(),
+      duration: movie?.duration,
+      description: movie?.description,
+      producer: movie?.producer,
+      director: movie?.director,
+      trailerLink: movie?.trailer_link,
+      releaseDate: movie?.release_date,
+      castOptions: movie?.cast?.map((member: any) => ({
+        label: member.name,
+        value: member?.id?.toString(),
+      })),
+    },
   });
   const onSubmit = async (data: MovieFormValues) => {
     console.log("onsubmit");
@@ -750,7 +784,9 @@ const UpdateMovieForm = ({
                 </FormItem>
               )}
             />
-            <ImageUploader onImageChange={handleImageChange} />
+            <div>
+              <ImageUploader onImageChange={handleImageChange} />
+            </div>
           </div>
 
           <Button className="ml-auto" type="submit">
