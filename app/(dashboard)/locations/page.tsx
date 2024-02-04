@@ -1,26 +1,10 @@
-import Search from "@/components/search";
-import TableData from "@/components/table-data";
-import TablePagination from "@/components/table-pagination";
-import { Button } from "@/components/ui/button";
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-import Link from "next/link";
-import { IP } from "@/lib/interceptor/admin_content/axios";
-import Image from "next/image";
+import Search from "@/components/search";
+import TablePagination from "@/components/table-pagination";
 import { getLocations } from "@/lib/action/location/action";
 import { AddLocationDialog } from "@/components/dialog/location/add-location";
-import { DeleteLocationDialog } from "@/components/dialog/location/delete-location";
+import LocationComponent from "@/components/resources/location";
+
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
 }
@@ -43,29 +27,10 @@ const LocationsPage = async ({ searchParams }: ServicePageProps) => {
 
           <AddLocationDialog />
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>S.N</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {locations?.map((location: any, index: any) => (
-                <TableRow key={index}>
-                  <TableCell>{10 * paginationPage + (index + 1)}</TableCell>
-                  <TableCell>{location?.name}</TableCell>
-
-                  <TableCell className="space-x-4">
-                    <DeleteLocationDialog id={location?.id} />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <LocationComponent
+          locations={locations}
+          paginationPage={paginationPage}
+        />
       </div>
     </div>
   );

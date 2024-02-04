@@ -3,6 +3,8 @@ import { serviceAuth } from "@/lib/interceptor/admin_content/axios";
 import serviceAuthInstance from "@/lib/interceptor/admin_content/axios";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getErrorMessage } from "@/utils/errorMessage";
+import { timeOut } from "@/types/types";
 
 export const getLocations = async (
   searchQuery: string | null,
@@ -10,11 +12,24 @@ export const getLocations = async (
 ) => {
   try {
     const response = await serviceAuth.get(
-      `/fill_contents/location/?search_query=${searchQuery}&page=${page}`
+      `/fill_contents/location/?search_query=${searchQuery}&page=${page}`,
+      {
+        timeout: timeOut,
+      }
     );
     return response?.data?.data;
-  } catch (error) {
-    console.log("error");
+  } catch (error: any) {
+    if (error.code === "ECONNABORTED") {
+      // Timeout error
+      return {
+        error: "Request timed out. Please try again.",
+      };
+    } else {
+      // Other errors
+      return {
+        error: getErrorMessage(error),
+      };
+    }
   }
 };
 

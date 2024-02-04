@@ -1,19 +1,9 @@
+import React from "react";
 import Search from "@/components/search";
 import TablePagination from "@/components/table-pagination";
-import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { getGenres } from "@/lib/action/genre/action";
+import GenreCompoent from "@/components/resources/genre";
 import { AddGenreDialog } from "@/components/dialog/genre/add-genre";
-import { DeleteGenreDialog } from "@/components/dialog/genre/delete-genre";
+import { getGenres } from "@/lib/action/genre/action";
 
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
@@ -35,28 +25,7 @@ const GenrePage = async ({ searchParams }: ServicePageProps) => {
 
           <AddGenreDialog />
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>S.N</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {genres?.map((genre: any, index: any) => (
-                <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{genre?.name}</TableCell>
-                  <TableCell className="space-x-4">
-                    <DeleteGenreDialog id={genre.id} />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <GenreCompoent genres={genres} />
       </div>
     </div>
   );

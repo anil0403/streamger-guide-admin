@@ -2,15 +2,30 @@
 import serviceAuthInstance from "@/lib/interceptor/admin_content/axios";
 import { serviceAuth } from "@/lib/interceptor/admin_content/axios";
 import { revalidatePath } from "next/cache";
+import { getErrorMessage } from "@/utils/errorMessage";
+import { timeOut } from "@/types/types";
 
 export const getServices = async (searchQuery: string | null, page: string) => {
   try {
     const response = await serviceAuth.get(
-      `/fill_contents/ott/?search_query=${searchQuery}&page=${page}`
+      `/fill_contents/ott/?search_query=${searchQuery}&page=${page}`,
+      {
+        timeout: timeOut,
+      }
     );
     return response?.data?.data;
-  } catch (error) {
-    console.log("error");
+  } catch (error: any) {
+    if (error.code === "ECONNABORTED") {
+      // Timeout error
+      return {
+        error: "Request timed out. Please try again.",
+      };
+    } else {
+      // Other errors
+      return {
+        error: getErrorMessage(error),
+      };
+    }
   }
 };
 

@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { getProviders } from "next-auth/react";
 // content microservice
 // export const IP = "http://192.168.1.73:8000"; // local
-export const IP = "http://65.0.6.42:8001"; // cloud
+export const IP = "http://13.201.18.17:8001"; // cloud
 
 export const ADMIN_LOGIN_URL = `${IP}/api/v1`;
 
@@ -43,7 +43,7 @@ serviceAuthInstance.interceptors.request.use(
     if (!config.headers["Authorization"]) {
       config.headers[
         "Authorization"
-      ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA3MDY2NTMzLCJpYXQiOjE3MDcwMjMzMzMsImp0aSI6IjBhMzQ2MWYzMGM0MTQ1ZTliMzA2ZGY0MzczMTI4ZGVjIiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.knFJ573Ip-Nq9Tsl1brm-4Uq_35lDgCtKevbi_A4W4k`;
+      ] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA3MDcyMDE0LCJpYXQiOjE3MDcwMjg4MTQsImp0aSI6Ijk5MzcwMjMzZTNkNzRjMTc4ZGE1YWY3OTExN2YzZDJlIiwidXNlcl9pZCI6MSwidXNlciI6ImFkbWluIn0.U1_xWSDv9X1YDlOjtD9dhYZatUbhRvTU-0rIp1ID350`;
     }
     return config;
   },

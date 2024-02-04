@@ -3,24 +3,11 @@ import TableData from "@/components/table-data";
 import TablePagination from "@/components/table-pagination";
 import { Button } from "@/components/ui/button";
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import Link from "next/link";
-import { IP } from "@/lib/interceptor/admin_content/axios";
-import Image from "next/image";
 import { getCasts } from "@/lib/action/cast/action";
 import { DeleteCastDialog } from "@/components/dialog/cast/delete-cast";
 import { AddCastDialog } from "@/components/dialog/cast/add-cast";
+import CastComponent from "@/components/resources/cast";
 interface ServicePageProps {
   searchParams?: Record<string, string | string[]>;
 }
@@ -43,38 +30,7 @@ const CastPage = async ({ searchParams }: ServicePageProps) => {
 
           <AddCastDialog />
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>S.N</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Avatar</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {casts?.map((cast: any, index: any) => {
-                console.log(`${IP}/${cast?.picture}`);
-                return (
-                  <TableRow key={index}>
-                    <TableCell>{10 * paginationPage + (index + 1)}</TableCell>
-                    <TableCell>{cast?.name}</TableCell>
-                    <TableCell>
-                      <Avatar>
-                        <AvatarImage src={`${IP}${cast?.picture}`} />
-                        <AvatarFallback>P</AvatarFallback>
-                      </Avatar>
-                    </TableCell>
-                    <TableCell className="space-x-4">
-                      <DeleteCastDialog id={cast?.id} />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
+        <CastComponent paginationPage={paginationPage} casts={casts} />
       </div>
     </div>
   );

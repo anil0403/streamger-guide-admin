@@ -21,7 +21,7 @@ const Sidebar = () => {
   // console.log("pathanme = ", pathname);
   const menuItems = [
     {
-      title: "Pages",
+      // title: "Pages",
       list: [
         {
           title: "Dashboard",
@@ -44,6 +44,14 @@ const Sidebar = () => {
           icon: <IoTvSharp />,
         },
       ],
+    },
+    {
+      title: "Pages",
+
+    },
+    {
+      title: "Category",
+
     },
     {
       title: "Archived",
@@ -102,12 +110,12 @@ const Sidebar = () => {
       />
       <ScrollArea className="py-4">
         {menuItems.map((item: any) => (
-          <div key={item.title} className="py-1">
+          <div key={item?.title} className="py-1">
             <h2 className="px-4 py-1 text-sm font-medium tracking-tight text-muted-foreground">
-              {item.title}
+              {item.title || null}
             </h2>
             <div className="space-y-1">
-              {item.list.map((element: any, index: number) => (
+              {item.list?.map((element: any, index: number) => (
                 <Button
                   key={index}
                   asChild
